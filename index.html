@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simulador de Salário - Analista em Ciência e Tecnologia (Lei 15.141/2025)</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="container">
+        <h1>Simulador de Salário</h1>
+        <p class="subtitle">Analista em Ciência e Tecnologia (Lei 15.141/2025)</p>
+
+        <form id="simulatorForm">
+            <fieldset>
+                <legend>Estrutura da Carreira</legend>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="periodo">Vigência (Período)</label>
+                        <select id="periodo">
+                            <option value="2025">Jan/2025</option>
+                            <option value="2026">Abril/2026</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="classe">Classe</label>
+                        <select id="classe">
+                            <option value="A">A</option>
+                            <option value="B">B</option>
+                            <option value="C">C</option>
+                            <option value="Especial">Especial</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="padrao">Padrão</label>
+                        <select id="padrao"></select>
+                    </div>
+					<div class="form-group">
+                        <label for="titulo">Titulação</label>
+                        <select id="titulo">
+							<option value="0">Nenhuma</option>
+                            <option value="1">Pós/Espec.</option>
+                            <option value="2">Mestrado</option>
+                            <option value="3">Doutorado</option>
+                        </select>
+                    </div>
+                </div>
+            </fieldset>
+            
+			<fieldset>
+                <legend>Simulações Específicas</legend>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="simulacaoEspecial">Tipo de Cálculo</label>
+						<select id="simulacaoEspecial">
+							<option value="mes_normal">Mês Normal</option>
+							<option value="mes_fracionado">Mês Fracionado</option>
+							<option value="ferias">Incluir 1/3 de Férias</option>
+							<option value="decimo_1">13º Salário (1ª Parcela)</option>
+							<option value="decimo_2">13º Salário (2ª Parcela)</option>
+						</select>
+                    </div>
+					<div class="form-group">
+                        <label for="dias">Dias</label>
+						<input type="number" id="dias" value="30" min="1" max="31" readonly="">
+                    </div>
+                    <div class="form-group">
+                        <label for="point">GDACT (Pontos)</label>
+						<input type="number" id="point" value="80" min="0" max="100">
+                    </div>
+                 
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Auxílios e Benefícios Mensais</legend>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="auxAlimentacao">Alimentação</label>
+                        <input type="number" id="auxAlimentacao" value="1000.00" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="auxTransporte">Transporte</label>
+                        <input type="number" id="auxTransporte" placeholder="Ex: 350.00" value="0" step="0.01">
+                    </div>
+                    <div class="form-group">
+                        <label for="auxCreche">Dep. (Creche)</label>
+                        <input type="number" id="auxCreche" value="0" min="0" max="10">
+                    </div>
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Saúde Suplementar (Idade em Anos)</legend>
+                <div class="form-row">
+                    <div class="form-group"><label for="idadeTitular">Titular</label><input type="number" id="idadeTitular" placeholder="Ex: 35" min="0"></div>
+                    <div class="form-group"><label for="idadeDep1">Dep. 1</label><input type="number" id="idadeDep1" placeholder="Ex: 8" min="0"></div>
+                    <div class="form-group"><label for="idadeDep2">Dep. 2</label><input type="number" id="idadeDep2" min="0"></div>
+                    <div class="form-group"><label for="idadeDep3">Dep. 3</label><input type="number" id="idadeDep3" min="0"></div>
+                </div>
+            </fieldset>
+
+            <button type="submit">Calcular Salário</button>
+        </form>
+
+        <div id="results" style="display: none;"></div>
+
+        <div class="footer">
+             <a href="carreira.html" class="info-link">Clique aqui para saber mais sobre a carreira</a>
+            <p>Esta é uma simulação. O valor líquido é uma estimativa e não inclui outros descontos (ex: faltas, consignados) ou benefícios específicos.</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
