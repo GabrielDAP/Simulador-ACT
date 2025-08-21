@@ -67,7 +67,11 @@
                     </div>
 					<div class="form-group">
                         <label for="mes">Nº de Dias do Mês</label>
-						<input type="number" id="mes" value="30" min="28" max="31">
+						<input type="number" id="mes" value="30" min="1" max="31">
+                    </div>
+					<div class="form-group">
+                        <label for="mes_trabalhado">Nº de Meses Trabalhados</label>
+						<input type="number" id="mes_trabalhado" value="12" min="1" max="12">
                     </div>
                     <div class="form-group">
                         <label for="point">GDACT (Pontos)</label>
@@ -119,27 +123,42 @@
     <script src="script.js"></script>
 	
 	
+	
+	
 	<script>
 	document.addEventListener("DOMContentLoaded", function () {
 		const tipoCalculo = document.getElementById("simulacaoEspecial");
 		const diasDiv = document.getElementById("dias").parentElement;
 		const mesDiv = document.getElementById("mes").parentElement;
+		const mesTrabalhadoDiv = document.getElementById("mes_trabalhado").parentElement;
+		const pointDiv = document.getElementById("point").parentElement;
 
-		// Esconde as divs inicialmente
+		// Esconde todas as divs inicialmente
 		diasDiv.style.display = "none";
 		mesDiv.style.display = "none";
+		mesTrabalhadoDiv.style.display = "none";
+		pointDiv.style.display = "block"; // Assume que "point" aparece por padrão
 
 		tipoCalculo.addEventListener("change", function () {
-			if (this.value === "mes_fracionado") {
-				diasDiv.style.display = "block";
-				mesDiv.style.display = "block";
-			} else {
-				diasDiv.style.display = "none";
-				mesDiv.style.display = "none";
-			}
+			const valor = this.value;
+
+			// Mostrar "Dias" e "Nº de Dias do Mês" apenas para "mes_fracionado"
+			const isFracionado = valor === "mes_fracionado";
+			diasDiv.style.display = isFracionado ? "block" : "none";
+			mesDiv.style.display = isFracionado ? "block" : "none";
+
+			// Mostrar "mes_trabalhado" apenas para "ferias", "decimo_1" e "decimo_2"
+			const mostrarMesTrabalhado = ["ferias", "decimo_1", "decimo_2"].includes(valor);
+			mesTrabalhadoDiv.style.display = mostrarMesTrabalhado ? "block" : "none";
+
+			// Esconder "point" apenas para "decimo_1" e "decimo_2"
+			const esconderPoint = ["decimo_1", "decimo_2"].includes(valor);
+			pointDiv.style.display = esconderPoint ? "none" : "block";
 		});
 	});
 	</script>
+
+
 
 
 
