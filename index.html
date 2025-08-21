@@ -63,7 +63,11 @@
                     </div>
 					<div class="form-group">
                         <label for="dias">Dias</label>
-						<input type="number" id="dias" value="30" min="1" max="31" readonly="">
+						<input type="number" id="dias" value="30" min="1" max="31">
+                    </div>
+					<div class="form-group">
+                        <label for="mes">Nº de Dias do Mês</label>
+						<input type="number" id="mes" value="30" min="28" max="31">
                     </div>
                     <div class="form-group">
                         <label for="point">GDACT (Pontos)</label>
@@ -113,6 +117,32 @@
     </div>
 
     <script src="script.js"></script>
+	
+	
+	<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		const tipoCalculo = document.getElementById("simulacaoEspecial");
+		const diasDiv = document.getElementById("dias").parentElement;
+		const mesDiv = document.getElementById("mes").parentElement;
 
+		// Esconde as divs inicialmente
+		diasDiv.style.display = "none";
+		mesDiv.style.display = "none";
+
+		tipoCalculo.addEventListener("change", function () {
+			if (this.value === "mes_fracionado") {
+				diasDiv.style.display = "block";
+				mesDiv.style.display = "block";
+			} else {
+				diasDiv.style.display = "none";
+				mesDiv.style.display = "none";
+			}
+		});
+	});
+	</script>
+
+
+
+	
 </body>
 </html>

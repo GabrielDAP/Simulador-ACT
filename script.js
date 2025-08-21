@@ -179,6 +179,7 @@ form.addEventListener('submit', (event) => {
     const classe = classeSelect.value;
 	const titulo = titleSelect.value;
 	const ponto = document.getElementById('point').value;
+	const dias = document.getElementById('dias').value;
     const padraoIndex = parseInt(padraoSelect.value, 10);
     const simulacao = document.getElementById('simulacaoEspecial').value;
     const auxAlimentacao = parseFloat(document.getElementById('auxAlimentacao').value) || 0;
@@ -240,12 +241,34 @@ form.addEventListener('submit', (event) => {
         const irpf13 = calculateIRPF(salario - inss13);
         const parcela2 = (salario / 2) - inss13 - irpf13;
         totalLiquido = parcela2 + totalBeneficios - auxTransporteDed;
+
         resultsHTML += `<div class="result-item"><span class="label">Total 13º Salário</span><span class="value">${currencyFormatter.format(salario)}</span></div>
             <div class="result-item"><span class="label">(-) INSS sobre 13º</span><span class="value negative">-${currencyFormatter.format(inss13)}</span></div>
             <div class="result-item"><span class="label">(-) IRPF sobre 13º</span><span class="value negative">-${currencyFormatter.format(irpf13)}</span></div><hr>
             <div class="result-item"><span class="label">Valor da 2ª Parcela</span><span class="value positive">${currencyFormatter.format(parcela2)}</span></div>
             <div class="result-item"><span class="label">+ Benefícios do Mês</span><span class="value positive">${currencyFormatter.format(totalBeneficios - auxTransporteDed)}</span></div>`;
-    }
+    } else if (simulacao == 'mes_fracionado'){
+		const salarioFracionado = salario/30*dias;
+		const gdactFracionado = gdact/30*dias;
+		const rtFracionado = rt/30*dias;
+		let tributaveisFracionados = salarioFracionado + gdactFracionado + rtFracionado;
+		const inssFracionado = calculateinss(tributaveisFracionados);
+		const funprespFracionado = calculateComplementar(tributaveisFracionados);
+		const irpfFracionado = calculateIRPF(tributaveisFracionados - inssFracionado - funprespFracionado);
+		totalLiquido = tributaveisFracionados + totalBeneficios - inssFracionado - funprespFracionado - irpfFracionado - auxTransporteDed;
+		
+		resultsHTML += `<div class="result-item"><span class="label">Salário Base Fracionado</span><span class="value positive">${currencyFormatter.format(salarioFracionado)}</span></div>`;
+		resultsHTML += `<div class="result-item"><span class="label">GDACT</span><span class="value positive">${currencyFormatter.format(gdactFracionado)}</span></div>`;
+		resultsHTML += `<div class="result-item"><span class="label">RT</span><span class="value positive">${currencyFormatter.format(rtFracionado)}</span></div>`;
+        resultsHTML += `<div class="result-item"><span class="label">Auxílio Alimentação</span><span class="value positive">${currencyFormatter.format(auxAlimentacao)}</span></div>
+            <div class="result-item"><span class="label">Auxílio Transporte</span><span class="value positive">${currencyFormatter.format(auxTransporte)}</span></div>
+            <div class="result-item"><span class="label">Auxílio Creche</span><span class="value positive">${currencyFormatter.format(auxCrecheTotal)}</span></div>
+            <div class="result-item"><span class="label">Ressarc. Saúde</span><span class="value positive">${currencyFormatter.format(totalSaude)}</span></div>
+            <div class="result-item"><span class="label">(-) INSS</span><span class="value negative">-${currencyFormatter.format(inssFracionado)}</span></div>
+            <div class="result-item"><span class="label">(-) FUNPRESP</span><span class="value negative">-${currencyFormatter.format(funprespFracionado)}</span></div>
+			<div class="result-item"><span class="label">(-) IRPF</span><span class="value negative">-${currencyFormatter.format(irpfFracionado)}</span></div>
+            <div class="result-item"><span class="label">(-) 6% Aux. Transporte</span><span class="value negative">-${currencyFormatter.format(auxTransporteDed)}</span></div>`;
+	}
     resultsHTML += `<div class="result-item" id="net-salary-item"><span class="label">Líquido Estimado a Receber</span><span class="value">${currencyFormatter.format(totalLiquido)}</span></div>`;
 	resultsDiv.innerHTML = resultsHTML;
     resultsDiv.style.display = 'block';
