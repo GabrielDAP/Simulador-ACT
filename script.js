@@ -1,4 +1,4 @@
-// --- DATA OBJECTS ---
+// --- DADOS ---
 const salaries = {
     '2025': {
         'A': [6223.63, 6315.00, 6408.00, 6502.00, 6598.00, 0],
@@ -7,7 +7,7 @@ const salaries = {
         'Especial': [9868.00, 10277.00, 10703.00]
     },
     '2026': {
-        'A': [6223.63, 6322.36, 6423.15, 6526.01, 6630.00, 0], 
+        'A': [6223.63, 6322.36, 6423.15, 6526.01, 6630.00, 0],
         'B': [6842.44, 7025.58, 7213.05, 7405.02, 7602.66, 8013.66],
         'C': [8227.40, 8447.54, 8672.30, 8903.87, 9385.28, 9807.23],
         'Especial': [10246.71, 10706.84, 11186.76]
@@ -52,7 +52,7 @@ const rtMestre = {
         'Especial': [4822.64, 5022.36, 5230.36]
     },
     '2026': {
-        'A': [3041.50, 3089.94, 3139.15, 3189.15, 3239.94, 0], 
+        'A': [3041.50, 3089.94, 3139.15, 3189.15, 3239.94, 0],
         'B': [3343.97, 3433.20, 3524.82, 3618.89, 3715.46, 3916.40],
         'C': [4020.92, 4128.22, 4238.38, 4351.48, 4586.83, 4792.64],
         'Especial': [5007.69, 5232.39, 5467.17]
@@ -74,11 +74,147 @@ const rtDoutor = {
     }
 };
 
-// --- ESTRUTURA DA CARREIRA ANALISTA---
 const padroesPorClasse = { 'A': 5, 'B': 6, 'C': 6, 'Especial': 3 };
 const VALOR_AUX_CRECHE = 484.90;
-const roman = ['I', 'II', 'III', 'IV', 'V', 'VI'];
+const ROMANOS = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 
+const $ = id => document.getElementById(id);
+
+const currencyFormatter = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+const formatCurrency = v => currencyFormatter.format(Number(v || 0));
+
+const safeParseFloat = v => Number.isFinite(parseFloat(v)) ? parseFloat(v) : 0;
+const safeParseInt = v => Number.isFinite(parseInt(v)) ? parseInt(v) : 0;
+
+// ---------------------------- DADOS FCE ----------------------------
+const fceData = [
+  { codigo: "FCE 1.17", valor: 13630.81 }, { codigo: "FCE 1.16", valor: 12004.84 }, { codigo: "FCE 1.15", valor: 10424.34 },
+  { codigo: "FCE 1.14", valor: 8916.56 }, { codigo: "FCE 1.13", valor: 7937.44 }, { codigo: "FCE 1.12", valor: 5976.02 },
+  { codigo: "FCE 1.11", valor: 4765.13 }, { codigo: "FCE 1.10", valor: 4087.96 }, { codigo: "FCE 1.09", valor: 3209.60 },
+  { codigo: "FCE 1.08", valor: 3078.91 }, { codigo: "FCE 1.07", valor: 2668.47 }, { codigo: "FCE 1.06", valor: 2259.64 },
+  { codigo: "FCE 1.05", valor: 1925.77 }, { codigo: "FCE 1.04", valor: 1425.44 }, { codigo: "FCE 1.03", valor: 1187.56 },
+  { codigo: "FCE 1.02", valor: 664.20 }, { codigo: "FCE 1.01", valor: 393.01 },
+  { codigo: "FCE 2.17", valor: 13630.81 }, { codigo: "FCE 2.16", valor: 12004.84 }, { codigo: "FCE 2.15", valor: 10424.34 },
+  { codigo: "FCE 2.14", valor: 8916.56 }, { codigo: "FCE 2.13", valor: 7937.44 }, { codigo: "FCE 2.12", valor: 5976.02 },
+  { codigo: "FCE 2.11", valor: 4765.13 }, { codigo: "FCE 2.10", valor: 4087.96 }, { codigo: "FCE 2.09", valor: 3209.60 },
+  { codigo: "FCE 2.08", valor: 3078.91 }, { codigo: "FCE 2.07", valor: 2668.47 }, { codigo: "FCE 2.06", valor: 2259.64 },
+  { codigo: "FCE 2.05", valor: 1925.77 }, { codigo: "FCE 2.04", valor: 1425.44 }, { codigo: "FCE 2.03", valor: 1187.56 },
+  { codigo: "FCE 2.02", valor: 664.20 }, { codigo: "FCE 2.01", valor: 393.01 },
+  { codigo: "FCE 3.16", valor: 12004.84 }, { codigo: "FCE 3.15", valor: 10424.34 }, { codigo: "FCE 3.14", valor: 8916.56 },
+  { codigo: "FCE 3.13", valor: 7937.44 }, { codigo: "FCE 3.12", valor: 5976.02 }, { codigo: "FCE 3.11", valor: 4765.13 },
+  { codigo: "FCE 3.10", valor: 4087.96 }, { codigo: "FCE 3.09", valor: 3209.60 }, { codigo: "FCE 3.08", valor: 3078.91 },
+  { codigo: "FCE 3.07", valor: 2668.47 }, { codigo: "FCE 3.06", valor: 2259.64 }, { codigo: "FCE 3.05", valor: 1925.77 },
+  { codigo: "FCE 3.04", valor: 1425.44 }, { codigo: "FCE 3.03", valor: 1187.56 }, { codigo: "FCE 3.02", valor: 664.20 },
+  { codigo: "FCE 3.01", valor: 393.01 },
+  { codigo: "FCE 4.13", valor: 7937.44 }, { codigo: "FCE 4.12", valor: 5976.02 }, { codigo: "FCE 4.11", valor: 4765.13 },
+  { codigo: "FCE 4.10", valor: 4087.96 }, { codigo: "FCE 4.09", valor: 3209.60 }, { codigo: "FCE 4.08", valor: 3078.91 },
+  { codigo: "FCE 4.07", valor: 2668.47 }, { codigo: "FCE 4.06", valor: 2259.64 }, { codigo: "FCE 4.05", valor: 1925.77 },
+  { codigo: "FCE 4.04", valor: 1425.44 }, { codigo: "FCE 4.03", valor: 1187.56 }, { codigo: "FCE 4.02", valor: 664.20 },
+  { codigo: "FCE 4.01", valor: 393.01 }
+];
+
+// Popula o select dinamicamente
+const selectFCE = document.getElementById('funcaoComissionada');
+selectFCE.innerHTML = '<option value="nenhuma">Nenhuma</option>';
+fceData.forEach(item => {
+  const opt = document.createElement('option');
+  opt.value = item.codigo.replace(/\s/g, '_'); // ex.: FCE_1.17
+  opt.textContent = item.codigo;
+  opt.dataset.valor = item.valor;
+  selectFCE.appendChild(opt);
+});
+
+// ---------------------------- Cálculos ----------------------------
+
+const calculateINSS = base => {
+    const tiers = [
+        { limit: 1518.00, rate: 0.075 },
+        { limit: 2793.88, rate: 0.09 },
+        { limit: 4190.83, rate: 0.12 },
+        { limit: 8157.41, rate: 0.14 }
+    ];
+    let total = 0, last = 0;
+    for (const t of tiers) {
+        if (base > last) {
+            const taxable = Math.min(base - last, t.limit - last);
+            total += taxable * t.rate;
+        }
+        last = t.limit;
+    }
+    return total;
+};
+
+const calculateComplementar = base => {
+    const teto = 8157.41;
+    return base > teto ? (base - teto) * 0.085 : 0;
+};
+
+const calculateIRPF = base => {
+    const tiers = [
+        { limit: 2428.80, rate: 0, deduction: 0 },
+        { limit: 2826.65, rate: 0.075, deduction: 182.16 },
+        { limit: 3751.05, rate: 0.15, deduction: 394.16 },
+        { limit: 4664.68, rate: 0.225, deduction: 675.49 },
+        { limit: Infinity, rate: 0.275, deduction: 908.73 }
+    ];
+    for (const t of tiers) {
+        if (base <= t.limit) return Math.max(0, base * t.rate - t.deduction);
+    }
+    return 0;
+};
+
+/*
+------------------------------
+ IRPF 2026 – Fórmula Oficial
+------------------------------
+ Redutor progressivo aprovado no PL/Lei 15.270/2025:
+ 
+ Redução = 978,62 − (0,133145 × Base_de_Cálculo)
+
+ • A redução é aplicada SOMENTE ao imposto calculado,
+   não à base.
+
+ • Para base mensal <= 5.000,00 → Imposto final = 0
+ 
+ • Para base entre 5.000,01 e 7.350,00:
+      imposto2026 = imposto_normal − redução
+ 
+ • A redução cai linearmente e chega a zero em 7.350,00
+*/
+
+// Função oficial 2026 com arredondamento Math.round
+const calculateIRPF2026 = baseValue => {
+    const base = Number(baseValue || 0);
+
+    if (base <= 5000) return 0;
+
+    const impostoBase = calculateIRPF(base);
+
+    let redutor = 0;
+    if (base <= 7350) {
+        redutor = 978.62 - (0.133145 * base);
+        if (redutor < 0) redutor = 0;
+    }
+
+    const impostoFinal = Math.max(0, impostoBase - redutor);
+
+    return Math.round(impostoFinal * 100) / 100;
+};
+
+const getIRPF = (periodo, base) =>
+    periodo === '2026' ? calculateIRPF2026(base) : calculateIRPF(base);
+
+// ---------------------------- Tabelas ----------------------------
+
+const getTableValue = (table, periodo, classe, index) =>
+    table?.[periodo]?.[classe]?.[index] ?? 0;
+
+const getRtByTitle = (t, periodo, classe, p) =>
+    t === '1' ? getTableValue(rtEspec, periodo, classe, p) :
+    t === '2' ? getTableValue(rtMestre, periodo, classe, p) :
+    t === '3' ? getTableValue(rtDoutor, periodo, classe, p) : 0;
+
+// ---------------------------- SAÚDE ----------------------------
 
 const saudePerCapita = {
     faixasIdade: [18, 23, 28, 33, 38, 43, 48, 53, 58],
@@ -93,192 +229,192 @@ const saudePerCapita = {
     ]
 };
 
-const classeSelect = document.getElementById('classe');
-const padraoSelect = document.getElementById('padrao');
-const titleSelect = document.getElementById('titulo');
-const form = document.getElementById('simulatorForm');
-const resultsDiv = document.getElementById('results');
-
-const currencyFormatter = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
-
-function updatePadraoOptions() {
-    const selectedClasse = classeSelect.value;
-    const numPadroes = padroesPorClasse[selectedClasse];
-    padraoSelect.innerHTML = '';
-    for(let i = 0; i < numPadroes; i++) {
-        const option = document.createElement('option');
-        option.value = i;
-        option.textContent = `Padrão ${roman[i]}`;
-        padraoSelect.appendChild(option);
-    }
-}
-
-function calculateinss(base) {
-    const tiers = [
-        { limit: 1518.00, rate: 0.075 }, { limit: 2793.88, rate: 0.09 },
-        { limit: 4190.83, rate: 0.12 }, { limit: 8157.41, rate: 0.14 }
-    ];
-    let inss = 0, lastLimit = 0;
-    for (const tier of tiers) {
-        if (base > lastLimit) {
-            const taxableInTier = Math.min(base - lastLimit, tier.limit - lastLimit);
-            inss += taxableInTier * tier.rate;
-        }
-        lastLimit = tier.limit;
-    }
-    return inss;
-}
-
-function calculateComplementar(base){
-	let complementar = 0;
-	let taxableBase = base - 8157.41;
-	
-	if (taxableBase < 0)
-		return complementar = 0;
-	else
-		return complementar = taxableBase * 0.085;
-}
-
-function calculateIRPF(base) {
-    const tiers = [
-        { limit: 2428.80, rate: 0, deduction: 0 }, { limit: 2826.65, rate: 0.075, deduction: 182.16 },
-        { limit: 3751.05, rate: 0.15, deduction: 394.16 }, { limit: 4664.68, rate: 0.225, deduction: 675.49 },
-        { limit: Infinity, rate: 0.275, deduction: 908.73 }
-    ];
-    for (const tier of tiers) {
-        if (base <= tier.limit) return Math.max(0, (base * tier.rate) - tier.deduction);
-    }
-    return 0;
-}
-
-function getSaudeValue(remuneracao, idade) {
+const getSaudeValue = (rem, idade) => {
     if (!idade || idade <= 0) return 0;
-    let idadeIndex = saudePerCapita.faixasIdade.findIndex(faixa => idade <= faixa);
-    if (idadeIndex === -1) idadeIndex = saudePerCapita.faixasIdade.length;
-    
-    const remIndex = saudePerCapita.valores.findIndex(faixa => remuneracao < faixa.rem);
-    return saudePerCapita.valores[remIndex].val[idadeIndex];
-}
+    let idadeIndex = saudePerCapita.faixasIdade.findIndex(x => idade <= x);
+    if (idadeIndex < 0) idadeIndex = saudePerCapita.faixasIdade.length;
 
-function rtIndex(retribuicao,result1, result2, result3){
-	if (retribuicao == 1){
-		return valor = result1;
-	}else if (retribuicao == 2){
-		return valor = result2;
-	}else if (retribuicao == 3){
-		return valor = result3;
-	} else{
-		return valor = 0;
-	}
-}
+    const remFaixa = saudePerCapita.valores.find(x => rem < x.rem);
+    return remFaixa.val[idadeIndex] ?? 0;
+};
+
+// ---------------------------- UI ----------------------------
+
+const classeSelect = $('classe');
+const padraoSelect = $('padrao');
+const resultsDiv = $('results');
+
+const updatePadraoOptions = () => {
+    padraoSelect.innerHTML = '';
+    const qtd = padroesPorClasse[classeSelect.value] || 0;
+    for (let i = 0; i < qtd; i++) {
+        const opt = document.createElement('option');
+        opt.value = i;
+        opt.textContent = `Padrão ${ROMANOS[i]}`;
+        padraoSelect.appendChild(opt);
+    }
+};
+
+const buildResultsHTML = items => items.map(it => `
+<div class="result-item">
+  <span class="label">${it.label}</span>
+  <span class="value ${it.negative ? 'negative' : it.positive ? 'positive' : ''}">
+    ${it.negative ? '-' : ''}${it.value !== null ? formatCurrency(it.value) : ''}
+  </span>
+</div>`).join('');
 
 
-form.addEventListener('submit', (event) => {
-    event.preventDefault();
-    const periodo = document.getElementById('periodo').value;
+// ---------------------------- Simulação ----------------------------
+
+const handleFormSubmit = e => {
+    e.preventDefault();
+
+    const periodo = $('periodo').value;
     const classe = classeSelect.value;
-	const titulo = titleSelect.value;
-	const ponto = document.getElementById('point').value;
-	const dias = document.getElementById('dias').value;
-	const mes = document.getElementById('mes').value;
-	const mesTrabalhado = document.getElementById('mes_trabalhado').value;
-    const padraoIndex = parseInt(padraoSelect.value, 10);
-    const simulacao = document.getElementById('simulacaoEspecial').value;
-    const auxAlimentacao = parseFloat(document.getElementById('auxAlimentacao').value) || 0;
-    const auxTransporte = parseFloat(document.getElementById('auxTransporte').value) || 0;
-    const numDepCreche = parseInt(document.getElementById('auxCreche').value) || 0;
-    const idadeTitular = parseInt(document.getElementById('idadeTitular').value) || 0;
+    const titulo = $('titulo').value;
+    const ponto = safeParseFloat($('point').value);
+    const dias = safeParseFloat($('dias').value);
+    const mes = safeParseFloat($('mes').value) || 1;
+    const mesTrab = safeParseFloat($('mes_trabalhado').value);
+
+    const padraoIndex = safeParseInt(padraoSelect.value);
+
+    const simulacao = $('simulacaoEspecial').value;
+
+    const auxAlimentacao = safeParseFloat($('auxAlimentacao').value);
+    const auxTransporte = safeParseFloat($('auxTransporte').value);
+    const auxCrecheQtd = safeParseInt($('auxCreche').value);
+
+    const idadeTitular = safeParseInt($('idadeTitular').value);
     const idadesDeps = [
-        parseInt(document.getElementById('idadeDep1').value) || 0,
-        parseInt(document.getElementById('idadeDep2').value) || 0,
-        parseInt(document.getElementById('idadeDep3').value) || 0
+        safeParseInt($('idadeDep1').value),
+        safeParseInt($('idadeDep2').value),
+        safeParseInt($('idadeDep3').value)
     ];
-    const salario = salaries[periodo][classe][padraoIndex];
-	
-	let espec = rtEspec[periodo][classe][padraoIndex];
-	let mestre = rtMestre[periodo][classe][padraoIndex];
-	let doutor = rtDoutor[periodo][classe][padraoIndex];
-	let rt = rtIndex(titulo, espec, mestre, doutor);
-	
 
-	let gdact = point[periodo][classe][padraoIndex] * ponto; 
-    let rendimentosTributaveis = salario + gdact + rt;
-    let inss = 0, irpf = 0, totalLiquido = 0, funpresp = 0;
-    let resultsHTML = '<h2>Resultado da Simulação</h2>';
-    const auxCrecheTotal = numDepCreche * VALOR_AUX_CRECHE;
-    const auxTransporteDed = Math.min(auxTransporte, salario * 0.06);
+    const gsisp = document.querySelector('input[name="gsisp"]:checked')?.value;
+    const gsiste = document.querySelector('input[name="gsiste"]:checked')?.value;
+
+    const salario = getTableValue(salaries, periodo, classe, padraoIndex);
+    const pontoUnit = getTableValue(point, periodo, classe, padraoIndex);
+
+    const gdact = pontoUnit * ponto;
+    const rt = getRtByTitle(titulo, periodo, classe, padraoIndex);
+
+    const adicionalGSISP = gsisp === 'sim' ? 5335.76 : 0;
+    const adicionalGSISTE = gsiste === 'sim' ? 4169.04 : 0;
+
+    let rendTrib = salario + gdact + rt + adicionalGSISP + adicionalGSISTE;
+	
+	const fceSelecionada = selectFCE.options[selectFCE.selectedIndex];
+	const valorFCE = fceSelecionada && fceSelecionada.dataset.valor ? parseFloat(fceSelecionada.dataset.valor) : 0;
+	rendTrib += valorFCE;
+
+    const auxCreche = auxCrecheQtd * VALOR_AUX_CRECHE;
+    const auxTranspDed = Math.min(auxTransporte, salario * 0.06);
+
     let totalSaude = getSaudeValue(salario, idadeTitular);
-    idadesDeps.forEach(idade => totalSaude += getSaudeValue(salario, idade));
-    const totalBeneficios = auxAlimentacao + auxTransporte + auxCrecheTotal + totalSaude;
+    idadesDeps.forEach(i => totalSaude += getSaudeValue(salario, i));
 
+    const beneficios = auxAlimentacao + auxTransporte + auxCreche + totalSaude;
+    const bruto = rendTrib + beneficios;
+
+    let inss = 0, irpf = 0, funpresp = 0, liquido = 0;
+
+    const items = [];
+
+    // ----------------- Mês Normal / Férias -----------------
     if (simulacao === 'mes_normal' || simulacao === 'ferias') {
+
         let abonoFerias = 0;
+
         if (simulacao === 'ferias') {
-            abonoFerias = salario / 12 * mesTrabalhado / 3;
-            rendimentosTributaveis += abonoFerias;
+            abonoFerias = (salario / 12) * (mesTrab / 3);
+            rendTrib += abonoFerias;
         }
-        inss = calculateinss(rendimentosTributaveis);
-		funpresp = calculateComplementar(rendimentosTributaveis);
-        irpf = calculateIRPF(rendimentosTributaveis - inss - funpresp);
-        totalLiquido = rendimentosTributaveis + totalBeneficios - inss - irpf - auxTransporteDed - funpresp;
-        resultsHTML += `<div class="result-item"><span class="label">Salário Base</span><span class="value positive">${currencyFormatter.format(salario)}</span></div>`;
-		resultsHTML += `<div class="result-item"><span class="label">GDACT</span><span class="value positive">${currencyFormatter.format(gdact)}</span></div>`;
-		resultsHTML += `<div class="result-item"><span class="label">RT</span><span class="value positive">${currencyFormatter.format(rt)}</span></div>`;
-        if (simulacao === 'ferias') resultsHTML += `<div class="result-item"><span class="label">Adicional 1/3 Férias</span><span class="value positive">${currencyFormatter.format(abonoFerias)}</span></div>`;
-        resultsHTML += `<div class="result-item"><span class="label">Auxílio Alimentação</span><span class="value positive">${currencyFormatter.format(auxAlimentacao)}</span></div>
-            <div class="result-item"><span class="label">Auxílio Transporte</span><span class="value positive">${currencyFormatter.format(auxTransporte)}</span></div>
-            <div class="result-item"><span class="label">Auxílio Creche</span><span class="value positive">${currencyFormatter.format(auxCrecheTotal)}</span></div>
-            <div class="result-item"><span class="label">Ressarc. Saúde</span><span class="value positive">${currencyFormatter.format(totalSaude)}</span></div>
-            <div class="result-item"><span class="label">(-) INSS</span><span class="value negative">-${currencyFormatter.format(inss)}</span></div>
-            <div class="result-item"><span class="label">(-) FUNPRESP</span><span class="value negative">-${currencyFormatter.format(funpresp)}</span></div>
-			<div class="result-item"><span class="label">(-) IRPF</span><span class="value negative">-${currencyFormatter.format(irpf)}</span></div>
-            <div class="result-item"><span class="label">(-) 6% Aux. Transporte</span><span class="value negative">-${currencyFormatter.format(auxTransporteDed)}</span></div>`;
-    } else if (simulacao === 'decimo_1') {
-        const parcela1 = salario / 2 / 12 * mesTrabalhado;
-        totalLiquido = parcela1;
-        resultsHTML += `<div class="result-item"><span class="label">1ª Parcela 13º Salário (50%)</span><span class="value positive">${currencyFormatter.format(parcela1)}</span></div>
-            <div class="result-item"><span class="label" style="font-size:0.9em; color:#888;">Descontos ocorrem na 2ª parcela.</span><span class="value"></span></div>`;
-    } else if (simulacao === 'decimo_2') {
-		const salario13 = salario / 2 / 12 * mesTrabalhado
-        const inss13 = calculateinss(salario13);
-        const irpf13 = calculateIRPF(salario13 - inss13);
-        const parcela2 = (salario13 / 2) - inss13 - irpf13;
-        totalLiquido = parcela2 + totalBeneficios - auxTransporteDed;
 
-        resultsHTML += `<div class="result-item"><span class="label">Total 13º Salário</span><span class="value">${currencyFormatter.format(salario13)}</span></div>
-            <div class="result-item"><span class="label">(-) INSS sobre 13º</span><span class="value negative">-${currencyFormatter.format(inss13)}</span></div>
-            <div class="result-item"><span class="label">(-) IRPF sobre 13º</span><span class="value negative">-${currencyFormatter.format(irpf13)}</span></div><hr>
-            <div class="result-item"><span class="label">Valor da 2ª Parcela</span><span class="value positive">${currencyFormatter.format(parcela2)}</span></div>
-            <div class="result-item"><span class="label">+ Benefícios do Mês</span><span class="value positive">${currencyFormatter.format(totalBeneficios - auxTransporteDed)}</span></div>`;
-    } else if (simulacao == 'mes_fracionado'){
-		const salarioFracionado = salario/mes*dias;
-		const gdactFracionado = gdact/mes*dias;
-		const rtFracionado = rt/mes*dias;
-		const auxAlimentacaoFracionado = auxAlimentacao/mes*dias;
-		let tributaveisFracionados = salarioFracionado + gdactFracionado + rtFracionado;
-		const inssFracionado = calculateinss(tributaveisFracionados);
-		const funprespFracionado = calculateComplementar(tributaveisFracionados);
-		const irpfFracionado = calculateIRPF(tributaveisFracionados - inssFracionado - funprespFracionado);
-		const totalBeneficiosFracionados = auxAlimentacaoFracionado + auxTransporte + auxCrecheTotal + totalSaude;
-		totalLiquido = tributaveisFracionados + totalBeneficiosFracionados - inssFracionado - funprespFracionado - irpfFracionado - auxTransporteDed;
-		resultsHTML += `<div class="result-item"><span class="label">Salário Base Fracionado</span><span class="value positive">${currencyFormatter.format(tributaveisFracionados)}</span></div>`;
-		resultsHTML += `<div class="result-item"><span class="label">Salário Base Fracionado</span><span class="value positive">${currencyFormatter.format(salarioFracionado)}</span></div>`;
-		resultsHTML += `<div class="result-item"><span class="label">GDACT</span><span class="value positive">${currencyFormatter.format(gdactFracionado)}</span></div>`;
-		resultsHTML += `<div class="result-item"><span class="label">RT</span><span class="value positive">${currencyFormatter.format(rtFracionado)}</span></div>`;
-        resultsHTML += `<div class="result-item"><span class="label">Auxílio Alimentação</span><span class="value positive">${currencyFormatter.format(auxAlimentacaoFracionado)}</span></div>
-            <div class="result-item"><span class="label">Auxílio Transporte</span><span class="value positive">${currencyFormatter.format(auxTransporte)}</span></div>
-            <div class="result-item"><span class="label">Auxílio Creche</span><span class="value positive">${currencyFormatter.format(auxCrecheTotal)}</span></div>
-            <div class="result-item"><span class="label">Ressarc. Saúde</span><span class="value positive">${currencyFormatter.format(totalSaude)}</span></div>
-            <div class="result-item"><span class="label">(-) INSS</span><span class="value negative">-${currencyFormatter.format(inssFracionado)}</span></div>
-            <div class="result-item"><span class="label">(-) FUNPRESP</span><span class="value negative">-${currencyFormatter.format(funprespFracionado)}</span></div>
-			<div class="result-item"><span class="label">(-) IRPF</span><span class="value negative">-${currencyFormatter.format(irpfFracionado)}</span></div>
-            <div class="result-item"><span class="label">(-) 6% Aux. Transporte</span><span class="value negative">-${currencyFormatter.format(auxTransporteDed)}</span></div>`;
-	}
-    resultsHTML += `<div class="result-item" id="net-salary-item"><span class="label">Líquido Estimado a Receber</span><span class="value">${currencyFormatter.format(totalLiquido)}</span></div>`;
-	resultsDiv.innerHTML = resultsHTML;
+        inss = Math.round(calculateINSS(rendTrib) * 100) / 100 - 0.01;
+        funpresp = Math.round(calculateComplementar(rendTrib) * 100) / 100;
+
+        irpf = getIRPF(periodo, rendTrib - inss - funpresp);
+
+        liquido = rendTrib + beneficios - inss - irpf - auxTranspDed - funpresp;
+
+        items.push(
+            { label: 'Salário Base', value: salario, positive: true },
+            { label: 'GDACT', value: gdact, positive: true },
+            { label: 'RT', value: rt, positive: true },
+            { label: 'GSISP', value: adicionalGSISP, positive: true },
+            { label: 'GSISTE', value: adicionalGSISTE, positive: true },
+			{ label: 'Função Comissionada (FCE)', value: valorFCE, positive: true }
+        );
+
+        if (simulacao === 'ferias')
+            items.push({ label: '1/3 Férias', value: abonoFerias, positive: true });
+
+        items.push(
+            { label: 'Aux. Alimentação', value: auxAlimentacao, positive: true },
+            { label: 'Aux. Transporte', value: auxTransporte, positive: true },
+            { label: 'Aux. Creche', value: auxCreche, positive: true },
+            { label: 'Ressarc. Saúde', value: totalSaude, positive: true },
+
+            { label: '(-) INSS', value: inss, negative: true },
+            { label: '(-) FUNPRESP', value: funpresp, negative: true },
+            { label: '(-) IRPF', value: irpf, negative: true },
+            { label: '(-) 6% Aux. Transporte', value: auxTranspDed, negative: true }
+        );
+    }
+
+    // ----------------- 13º - Primeira Parcela -----------------
+    else if (simulacao === 'decimo_1') {
+
+        const total13 = (rendTrib / 12) * mesTrab;
+        const parcela1 = total13 / 2;
+
+        liquido = parcela1 + beneficios;
+
+        items.push(
+            { label: '1ª Parcela 13º (50%)', value: parcela1, positive: true },
+            { label: 'Benefícios do Mês', value: beneficios, positive: true }
+        );
+    }
+
+    // ----------------- 13º - Segunda Parcela -----------------
+    else if (simulacao === 'decimo_2') {
+
+        const total13 = (rendTrib / 12) * mesTrab;
+
+        const parcela1 = total13 / 2;
+        const parcela2Base = parcela1;
+
+        const inss13 = calculateINSS(total13);
+        const irpf13 = getIRPF(periodo, total13 - inss13);
+        const funpresp13 = calculateComplementar(total13);
+
+        const parcela2 = parcela2Base - inss13 - irpf13 - funpresp13;
+
+        liquido = parcela2;
+
+        items.push(
+            { label: 'Total 13º', value: total13 },
+            { label: '(-) INSS 13º', value: inss13, negative: true },
+            { label: '(-) IRPF 13º', value: irpf13, negative: true },
+            { label: '(-) FUNPRESP 13º (total)', value: funpresp13, negative: true },
+            { label: 'Valor da 2ª Parcela', value: parcela2, positive: true }
+        );
+    }
+
+    // ----------------- Resultado Final -----------------
+    let html = `<h2>Resultado da Simulação</h2>`;
+    html += buildResultsHTML(items);
+    html += `<div class="result-item" id="net-salaryB-item"><span class="label">Salário Bruto</span><span class="value">${formatCurrency(bruto)}</span></div>`;
+    html += `<div class="result-item" id="net-salary-item"><span class="label">Salário Líquido</span><span class="value">${formatCurrency(liquido)}</span></div>`;
+
+    resultsDiv.innerHTML = html;
     resultsDiv.style.display = 'block';
-});
+};
 
-// --- INITIALIZATION ---
+// ---------------------------- Eventos ----------------------------
 classeSelect.addEventListener('change', updatePadraoOptions);
+$('simulatorForm').addEventListener('submit', handleFormSubmit);
 updatePadraoOptions();

@@ -79,6 +79,35 @@
                     </div>
                  
                 </div>
+				
+				<div class="form-row">
+					<div class="form-group">
+						<label>GSISP</label>
+						<div class="radio">
+						  <input type="radio" id="gsisp_nao" name="gsisp" value="nao" checked>
+						  <label for="gsisp_nao">Não</label>
+
+						  <input type="radio" id="gsisp_sim" name="gsisp" value="sim">
+						  <label for="gsisp_sim">Sim</label>
+						</div>
+					</div>
+					<div class="form-group">
+						<label>GSISTE</label>
+						<div class="radio">
+						  <input type="radio" id="gsiste_nao" name="gsiste" value="nao" checked>
+						  <label for="gsiste_nao">Não</label>
+
+						  <input type="radio" id="gsiste_sim" name="gsiste" value="sim">
+						  <label for="gsiste_sim">Sim</label>
+						</div>
+					</div>
+					<div class="form-group">
+                        <label for="funcaoComissionada">Função Comissionada</label>
+						<select id="funcaoComissionada">
+							<!-- O JS vai inserir as opções aqui -->
+						</select>
+					</div>
+				</div>
             </fieldset>
 
             <fieldset>
@@ -86,7 +115,7 @@
                 <div class="form-row">
                     <div class="form-group">
                         <label for="auxAlimentacao">Alimentação</label>
-                        <input type="number" id="auxAlimentacao" value="1000.00" step="0.01">
+                        <input type="number" id="auxAlimentacao" value="1175.00" step="0.01">
                     </div>
                     <div class="form-group">
                         <label for="auxTransporte">Transporte</label>

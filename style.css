@@ -84,6 +84,32 @@ button, .button-link {
     box-sizing: border-box;
     transition: background-color 0.3s;
 }
+
+/* CSS corrigido */
+.radio {
+  display: flex;
+  gap: 20px;
+  align-items: center;
+  padding-top: 8px;
+}
+
+.radio label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  color: #555;
+}
+
+/* Opcional: aumenta a área clicável do rádio e ajusta tamanho */
+.radio input[type="radio"] {
+  width: 16px;
+  height: 16px;
+  margin: 0;
+}
+
+
 button:hover, .button-link:hover { background-color: #0056b3; }
 #results { margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
 #results h2 { text-align: center; color: #333; margin-bottom: 20px; }
@@ -95,6 +121,8 @@ button:hover, .button-link:hover { background-color: #0056b3; }
 .result-item span.value.negative { color: #dc3545; }
 .result-item#net-salary-item { font-size: 1.2em; font-weight: bold; background-color: #e7f3ff; padding: 15px; margin-top: 10px; border-radius: 8px; }
 .result-item#net-salary-item span.value { color: #0056b3; }
+.result-item#net-salaryB-item { font-size: 1.2em; font-weight: bold; background-color: #f7f0c4; padding: 15px; margin-top: 10px; border-radius: 8px; }
+.result-item#net-salaryB-item span.value { color: #000; }
 .faq-section { margin-top: 20px; }
 .faq-section h2 { text-align: center; color: #333; margin-bottom: 25px; }
 .faq-section details { background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 10px; padding: 10px 15px; }
