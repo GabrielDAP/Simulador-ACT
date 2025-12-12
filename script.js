@@ -305,6 +305,7 @@ const handleFormSubmit = e => {
     const adicionalGSISTE = gsiste === 'sim' ? 4169.04 : 0;
 
     let rendTrib = salario + gdact + rt + adicionalGSISP + adicionalGSISTE;
+	let rendFix = salario + gdact + rt;
 	
 	const fceSelecionada = selectFCE.options[selectFCE.selectedIndex];
 	const valorFCE = fceSelecionada && fceSelecionada.dataset.valor ? parseFloat(fceSelecionada.dataset.valor) : 0;
@@ -334,7 +335,7 @@ const handleFormSubmit = e => {
         }
 
         inss = Math.round(calculateINSS(rendTrib) * 100) / 100 - 0.01;
-        funpresp = Math.round(calculateComplementar(rendTrib) * 100) / 100;
+        funpresp = Math.round(calculateComplementar(rendFix) * 100) / 100;
 
         irpf = getIRPF(periodo, rendTrib - inss - funpresp);
 
@@ -418,3 +419,4 @@ const handleFormSubmit = e => {
 classeSelect.addEventListener('change', updatePadraoOptions);
 $('simulatorForm').addEventListener('submit', handleFormSubmit);
 updatePadraoOptions();
+
