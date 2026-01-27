@@ -126,14 +126,17 @@ fceData.forEach(item => {
 
 // ---------------------------- Cálculos ----------------------------
 
-const calculateINSS = base => {
+const calculateINSS = (base) => {
     const tiers = [
-        { limit: 1518.00, rate: 0.075 },
-        { limit: 2793.88, rate: 0.09 },
-        { limit: 4190.83, rate: 0.12 },
-        { limit: 8157.41, rate: 0.14 }
+        { limit: 1621.00, rate: 0.075 },
+        { limit: 2902.84, rate: 0.09 },
+        { limit: 4354.27, rate: 0.12 },
+        { limit: 8475.55, rate: 0.14 }
     ];
-    let total = 0, last = 0;
+
+    let total = 0;
+    let last = 0;
+
     for (const t of tiers) {
         if (base > last) {
             const taxable = Math.min(base - last, t.limit - last);
@@ -141,6 +144,7 @@ const calculateINSS = base => {
         }
         last = t.limit;
     }
+
     return total;
 };
 
@@ -419,4 +423,5 @@ const handleFormSubmit = e => {
 classeSelect.addEventListener('change', updatePadraoOptions);
 $('simulatorForm').addEventListener('submit', handleFormSubmit);
 updatePadraoOptions();
+
 
