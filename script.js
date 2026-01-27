@@ -149,7 +149,7 @@ const calculateINSS = (base) => {
 };
 
 const calculateComplementar = base => {
-    const teto = 8157.41;
+    const teto = 8475.55;
     return base > teto ? (base - teto) * 0.085 : 0;
 };
 
@@ -424,6 +424,7 @@ const handleFormSubmit = e => {
 classeSelect.addEventListener('change', updatePadraoOptions);
 $('simulatorForm').addEventListener('submit', handleFormSubmit);
 updatePadraoOptions();
+
 
 
 
