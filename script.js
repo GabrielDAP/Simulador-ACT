@@ -339,8 +339,8 @@ const handleFormSubmit = e => {
             rendTrib += abonoFerias;
         }
 
-        inss = Math.round(calculateINSS(rendTrib) * 100) / 100 - 0.01;
-        funpresp = Math.round(calculateComplementar(rendFix) * 100) / 100;
+        inss = Math.round(calculateINSS(rendTrib) * 100) / 100 - 0.02;
+        funpresp = Math.floor(calculateComplementar(rendFix) * 100) / 100;
 
         irpf = getIRPF(periodo, rendTrib - inss - funpresp);
 
@@ -424,7 +424,6 @@ const handleFormSubmit = e => {
 classeSelect.addEventListener('change', updatePadraoOptions);
 $('simulatorForm').addEventListener('submit', handleFormSubmit);
 updatePadraoOptions();
-
 
 
 
