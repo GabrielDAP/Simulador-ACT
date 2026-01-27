@@ -305,8 +305,8 @@ const handleFormSubmit = e => {
     const gdact = pontoUnit * ponto;
     const rt = getRtByTitle(titulo, periodo, classe, padraoIndex);
 
-    const adicionalGSISP = gsisp === 'sim' ? 5335.76 : 0;
-    const adicionalGSISTE = gsiste === 'sim' ? 4169.04 : 0;
+    const adicionalGSISP = gsisp === 'sim' ? 5815.98 : 0;
+    const adicionalGSISTE = gsiste === 'sim' ? 4544.26 : 0;
 
     let rendTrib = salario + gdact + rt + adicionalGSISP + adicionalGSISTE;
 	let rendFix = salario + gdact + rt;
@@ -423,5 +423,6 @@ const handleFormSubmit = e => {
 classeSelect.addEventListener('change', updatePadraoOptions);
 $('simulatorForm').addEventListener('submit', handleFormSubmit);
 updatePadraoOptions();
+
 
 
