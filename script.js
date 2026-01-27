@@ -206,6 +206,7 @@ const calculateIRPF2026 = baseValue => {
 };
 
 const getIRPF = (periodo, base) =>
+	periodo === '2025' ? calculateIRPF2026(base) : calculateIRPF(base);
     periodo === '2026' ? calculateIRPF2026(base) : calculateIRPF(base);
 
 // ---------------------------- Tabelas ----------------------------
@@ -423,6 +424,7 @@ const handleFormSubmit = e => {
 classeSelect.addEventListener('change', updatePadraoOptions);
 $('simulatorForm').addEventListener('submit', handleFormSubmit);
 updatePadraoOptions();
+
 
 
 
