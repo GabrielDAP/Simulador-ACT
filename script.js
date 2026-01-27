@@ -88,29 +88,29 @@ const safeParseInt = v => Number.isFinite(parseInt(v)) ? parseInt(v) : 0;
 
 // ---------------------------- DADOS FCE ----------------------------
 const fceData = [
-  { codigo: "FCE 1.17", valor: 13630.81 }, { codigo: "FCE 1.16", valor: 12004.84 }, { codigo: "FCE 1.15", valor: 10424.34 },
-  { codigo: "FCE 1.14", valor: 8916.56 }, { codigo: "FCE 1.13", valor: 7937.44 }, { codigo: "FCE 1.12", valor: 5976.02 },
-  { codigo: "FCE 1.11", valor: 4765.13 }, { codigo: "FCE 1.10", valor: 4087.96 }, { codigo: "FCE 1.09", valor: 3209.60 },
-  { codigo: "FCE 1.08", valor: 3078.91 }, { codigo: "FCE 1.07", valor: 2668.47 }, { codigo: "FCE 1.06", valor: 2259.64 },
-  { codigo: "FCE 1.05", valor: 1925.77 }, { codigo: "FCE 1.04", valor: 1425.44 }, { codigo: "FCE 1.03", valor: 1187.56 },
-  { codigo: "FCE 1.02", valor: 664.20 }, { codigo: "FCE 1.01", valor: 393.01 },
-  { codigo: "FCE 2.17", valor: 13630.81 }, { codigo: "FCE 2.16", valor: 12004.84 }, { codigo: "FCE 2.15", valor: 10424.34 },
-  { codigo: "FCE 2.14", valor: 8916.56 }, { codigo: "FCE 2.13", valor: 7937.44 }, { codigo: "FCE 2.12", valor: 5976.02 },
-  { codigo: "FCE 2.11", valor: 4765.13 }, { codigo: "FCE 2.10", valor: 4087.96 }, { codigo: "FCE 2.09", valor: 3209.60 },
-  { codigo: "FCE 2.08", valor: 3078.91 }, { codigo: "FCE 2.07", valor: 2668.47 }, { codigo: "FCE 2.06", valor: 2259.64 },
-  { codigo: "FCE 2.05", valor: 1925.77 }, { codigo: "FCE 2.04", valor: 1425.44 }, { codigo: "FCE 2.03", valor: 1187.56 },
-  { codigo: "FCE 2.02", valor: 664.20 }, { codigo: "FCE 2.01", valor: 393.01 },
-  { codigo: "FCE 3.16", valor: 12004.84 }, { codigo: "FCE 3.15", valor: 10424.34 }, { codigo: "FCE 3.14", valor: 8916.56 },
-  { codigo: "FCE 3.13", valor: 7937.44 }, { codigo: "FCE 3.12", valor: 5976.02 }, { codigo: "FCE 3.11", valor: 4765.13 },
-  { codigo: "FCE 3.10", valor: 4087.96 }, { codigo: "FCE 3.09", valor: 3209.60 }, { codigo: "FCE 3.08", valor: 3078.91 },
-  { codigo: "FCE 3.07", valor: 2668.47 }, { codigo: "FCE 3.06", valor: 2259.64 }, { codigo: "FCE 3.05", valor: 1925.77 },
-  { codigo: "FCE 3.04", valor: 1425.44 }, { codigo: "FCE 3.03", valor: 1187.56 }, { codigo: "FCE 3.02", valor: 664.20 },
-  { codigo: "FCE 3.01", valor: 393.01 },
-  { codigo: "FCE 4.13", valor: 7937.44 }, { codigo: "FCE 4.12", valor: 5976.02 }, { codigo: "FCE 4.11", valor: 4765.13 },
-  { codigo: "FCE 4.10", valor: 4087.96 }, { codigo: "FCE 4.09", valor: 3209.60 }, { codigo: "FCE 4.08", valor: 3078.91 },
-  { codigo: "FCE 4.07", valor: 2668.47 }, { codigo: "FCE 4.06", valor: 2259.64 }, { codigo: "FCE 4.05", valor: 1925.77 },
-  { codigo: "FCE 4.04", valor: 1425.44 }, { codigo: "FCE 4.03", valor: 1187.56 }, { codigo: "FCE 4.02", valor: 664.20 },
-  { codigo: "FCE 4.01", valor: 393.01 }
+  { codigo: "FCE 1.17", valor: 16795.90 }, { codigo: "FCE 1.16", valor: 14045.67 }, { codigo: "FCE 1.15", valor: 12196.47 },
+  { codigo: "FCE 1.14", valor: 10432.37 }, { codigo: "FCE 1.13", valor: 8651.81 }, { codigo: "FCE 1.12", valor: 6513.87 },
+  { codigo: "FCE 1.11", valor: 5193.87 }, { codigo: "FCE 1.10", valor: 4455.87 }, { codigo: "FCE 1.09", valor: 3498.47 },
+  { codigo: "FCE 1.08", valor: 3356.01 }, { codigo: "FCE 1.07", valor: 2908.64 }, { codigo: "FCE 1.06", valor: 2463.00 },
+  { codigo: "FCE 1.05", valor: 2099.09 }, { codigo: "FCE 1.04", valor: 1553.73 }, { codigo: "FCE 1.03", valor: 1294.43 },
+  { codigo: "FCE 1.02", valor: 723.98 }, { codigo: "FCE 1.01", valor: 428.38 },
+  { codigo: "FCE 2.17", valor: 16795.90 }, { codigo: "FCE 2.16", valor: 14045.67 }, { codigo: "FCE 2.15", valor: 12196.47 },
+  { codigo: "FCE 2.14", valor: 10432.37 }, { codigo: "FCE 2.13", valor: 8651.81 }, { codigo: "FCE 2.12", valor: 6513.87 },
+  { codigo: "FCE 2.11", valor: 5193.87 }, { codigo: "FCE 2.10", valor: 4455.87 }, { codigo: "FCE 2.09", valor: 3498.47 },
+  { codigo: "FCE 2.08", valor: 3356.01 }, { codigo: "FCE 2.07", valor: 2908.64 }, { codigo: "FCE 2.06", valor: 2463.00 },
+  { codigo: "FCE 2.05", valor: 2099.09 }, { codigo: "FCE 2.04", valor: 1553.73 }, { codigo: "FCE 2.03", valor: 1294.43 },
+  { codigo: "FCE 2.02", valor: 723.98 }, { codigo: "FCE 2.01", valor: 428.38 },
+  { codigo: "FCE 3.16", valor: 14045.67 }, { codigo: "FCE 3.15", valor: 12196.47 }, { codigo: "FCE 3.14", valor: 10432.37 },
+  { codigo: "FCE 3.13", valor: 8651.81 }, { codigo: "FCE 3.12", valor: 6513.87 }, { codigo: "FCE 3.11", valor: 5193.87 },
+  { codigo: "FCE 3.10", valor: 4455.87 }, { codigo: "FCE 3.09", valor: 3498.47 }, { codigo: "FCE 3.08", valor: 3356.01 },
+  { codigo: "FCE 3.07", valor: 2908.64 }, { codigo: "FCE 3.06", valor: 2463.00 }, { codigo: "FCE 3.05", valor: 2099.09 },
+  { codigo: "FCE 3.04", valor: 1553.73 }, { codigo: "FCE 3.03", valor: 1294.43 }, { codigo: "FCE 3.02", valor: 723.98 },
+  { codigo: "FCE 3.01", valor: 428.38 },
+  { codigo: "FCE 4.13", valor: 8651.81 }, { codigo: "FCE 4.12", valor: 6513.87 }, { codigo: "FCE 4.11", valor: 5193.87 },
+  { codigo: "FCE 4.10", valor: 4455.87 }, { codigo: "FCE 4.09", valor: 3498.47 }, { codigo: "FCE 4.08", valor: 3356.01 },
+  { codigo: "FCE 4.07", valor: 2908.64 }, { codigo: "FCE 4.06", valor: 2463.00 }, { codigo: "FCE 4.05", valor: 2099.09 },
+  { codigo: "FCE 4.04", valor: 1553.73 }, { codigo: "FCE 4.03", valor: 1294.43 }, { codigo: "FCE 4.02", valor: 723.98 },
+  { codigo: "FCE 4.01", valor: 428.38 }
 ];
 
 // Popula o select dinamicamente
@@ -423,6 +423,7 @@ const handleFormSubmit = e => {
 classeSelect.addEventListener('change', updatePadraoOptions);
 $('simulatorForm').addEventListener('submit', handleFormSubmit);
 updatePadraoOptions();
+
 
 
 
