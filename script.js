@@ -1,11 +1,5 @@
 // --- DADOS ---
 const salaries = {
-    '2025': {
-        'A': [6223.63, 6315.00, 6408.00, 6502.00, 6598.00, 0],
-        'B': [6794.00, 6961.00, 7133.00, 7309.00, 7489.00, 7863.00],
-        'C': [8057.00, 8256.00, 8459.00, 8667.00, 9099.00, 9476.00],
-        'Especial': [9868.00, 10277.00, 10703.00]
-    },
     '2026': {
         'A': [6223.63, 6322.36, 6423.15, 6526.01, 6630.00, 0],
         'B': [6842.44, 7025.58, 7213.05, 7405.02, 7602.66, 8013.66],
@@ -15,12 +9,6 @@ const salaries = {
 };
 
 const point = {
-    '2025': {
-        'A': [18.59, 18.86, 19.14, 19.42, 19.71, 0],
-        'B': [20.29, 20.79, 21.30, 21.82, 22.36, 23.48],
-        'C': [24.06, 24.65, 25.26, 25.88, 27.17, 28.30],
-        'Especial': [29.47, 30.69, 31.96]
-    },
     '2026': {
         'A': [18.59, 18.89, 19.19, 19.49, 19.80, 0],
         'B': [20.44, 20.98, 21.54, 22.12, 22.71, 23.94],
@@ -30,12 +18,6 @@ const point = {
 };
 
 const rtEspec = {
-    '2025': {
-        'A': [2385.99, 2421.10, 2456.73, 2492.88, 2529.57, 0],
-        'B': [2604.56, 2668.76, 2734.53, 2801.93, 2870.98, 3014.24],
-        'C': [3088.53, 3164.65, 3242.64, 3322.56, 3488.36, 3632.82],
-        'Especial': [3783.27, 3939.95, 4103.11]
-    },
     '2026': {
         'A': [2385.99, 2423.99, 2462.60, 2501.82, 2541.67, 0],
         'B': [2623.28, 2693.28, 2765.15, 2838.95, 2914.70, 3072.34],
@@ -45,12 +27,6 @@ const rtEspec = {
 };
 
 const rtMestre = {
-    '2025': {
-        'A': [3041.50, 3086.25, 3131.67, 3177.75, 3224.52, 0],
-        'B': [3320.11, 3401.94, 3485.78, 3571.70, 3659.72, 3842.34],
-        'C': [3937.04, 4034.07, 4133.49, 4235.37, 4446.71, 4630.86],
-        'Especial': [4822.64, 5022.36, 5230.36]
-    },
     '2026': {
         'A': [3041.50, 3089.94, 3139.15, 3189.15, 3239.94, 0],
         'B': [3343.97, 3433.20, 3524.82, 3618.89, 3715.46, 3916.40],
@@ -60,12 +36,6 @@ const rtMestre = {
 };
 
 const rtDoutor = {
-    '2025': {
-        'A': [5415.37, 5495.05, 5575.92, 5657.97, 5741.23, 0],
-        'B': [5911.44, 6057.13, 6206.42, 6359.39, 6516.12, 6841.27],
-        'C': [7009.88, 7182.64, 7359.66, 7541.05, 7917.34, 8245.23],
-        'Especial': [8586.69, 8942.29, 9312.62]
-    },
     '2026': {
         'A': [5415.37, 5501.61, 5589.24, 5678.26, 5768.70, 0],
         'B': [5953.91, 6112.80, 6275.92, 6443.41, 6615.35, 6973.13],
@@ -75,7 +45,6 @@ const rtDoutor = {
 };
 
 const padroesPorClasse = { 'A': 5, 'B': 6, 'C': 6, 'Especial': 3 };
-const VALOR_AUX_CRECHE = 484.90;
 const ROMANOS = ['I', 'II', 'III', 'IV', 'V', 'VI'];
 
 const $ = id => document.getElementById(id);
@@ -113,12 +82,11 @@ const fceData = [
   { codigo: "FCE 4.01", valor: 428.38 }
 ];
 
-// Popula o select dinamicamente
 const selectFCE = document.getElementById('funcaoComissionada');
 selectFCE.innerHTML = '<option value="nenhuma">Nenhuma</option>';
 fceData.forEach(item => {
   const opt = document.createElement('option');
-  opt.value = item.codigo.replace(/\s/g, '_'); // ex.: FCE_1.17
+  opt.value = item.codigo.replace(/\s/g, '_');
   opt.textContent = item.codigo;
   opt.dataset.valor = item.valor;
   selectFCE.appendChild(opt);
@@ -145,15 +113,16 @@ const calculateINSS = (base) => {
         last = t.limit;
     }
 
-    return total;
+    return Math.min(Math.round(total * 100) / 100, 988.07);
 };
 
 const calculateComplementar = base => {
     const teto = 8475.55;
-    return base > teto ? (base - teto) * 0.085 : 0;
+    if (base <= teto) return 0;
+    return Math.round((base - teto) * 0.085 * 100) / 100;
 };
 
-const calculateIRPF = base => {
+const calculateIRPFBase = base => {
     const tiers = [
         { limit: 2428.80, rate: 0, deduction: 0 },
         { limit: 2826.65, rate: 0.075, deduction: 182.16 },
@@ -167,47 +136,26 @@ const calculateIRPF = base => {
     return 0;
 };
 
-/*
-------------------------------
- IRPF 2026 – Fórmula Oficial
-------------------------------
- Redutor progressivo aprovado no PL/Lei 15.270/2025:
- 
- Redução = 978,62 − (0,133145 × Base_de_Cálculo)
-
- • A redução é aplicada SOMENTE ao imposto calculado,
-   não à base.
-
- • Para base mensal <= 5.000,00 → Imposto final = 0
- 
- • Para base entre 5.000,01 e 7.350,00:
-      imposto2026 = imposto_normal − redução
- 
- • A redução cai linearmente e chega a zero em 7.350,00
-*/
-
-// Função oficial 2026 com arredondamento Math.round
 const calculateIRPF2026 = baseValue => {
     const base = Number(baseValue || 0);
 
     if (base <= 5000) return 0;
 
-    const impostoBase = calculateIRPF(base);
+    const impostoBase = Math.round(calculateIRPFBase(base) * 100) / 100;
 
     let redutor = 0;
     if (base <= 7350) {
         redutor = 978.62 - (0.133145 * base);
         if (redutor < 0) redutor = 0;
     }
+    redutor = Math.round(redutor * 100) / 100;
 
     const impostoFinal = Math.max(0, impostoBase - redutor);
 
     return Math.round(impostoFinal * 100) / 100;
 };
 
-const getIRPF = (periodo, base) =>
-	//periodo === '2025' ? calculateIRPF2026(base) : calculateIRPF(base);
-    periodo === '2026' ? calculateIRPF2026(base) : calculateIRPF(base);
+const getIRPF = (periodo, base) => calculateIRPF2026(base);
 
 // ---------------------------- Tabelas ----------------------------
 
@@ -218,30 +166,6 @@ const getRtByTitle = (t, periodo, classe, p) =>
     t === '1' ? getTableValue(rtEspec, periodo, classe, p) :
     t === '2' ? getTableValue(rtMestre, periodo, classe, p) :
     t === '3' ? getTableValue(rtDoutor, periodo, classe, p) : 0;
-
-// ---------------------------- SAÚDE ----------------------------
-
-const saudePerCapita = {
-    faixasIdade: [18, 23, 28, 33, 38, 43, 48, 53, 58],
-    valores: [
-        { rem: 3000, val: [254.18, 266.17, 269.77, 297.07, 305.95, 316.10, 361.06, 366.80, 372.51, 411.26] },
-        { rem: 6000, val: [196.34, 207.65, 211.02, 230.21, 238.60, 248.20, 280.87, 285.34, 289.80, 321.04] },
-        { rem: 9000, val: [160.80, 162.92, 166.10, 178.29, 186.21, 195.23, 210.12, 213.45, 216.78, 235.28] },
-        { rem: 12000, val: [142.18, 144.16, 147.11, 158.69, 166.10, 174.57, 187.87, 190.85, 193.82, 211.36] },
-        { rem: 15000, val: [132.03, 133.86, 136.60, 148.11, 155.02, 162.93, 176.13, 178.92, 181.71, 198.93] },
-        { rem: 18000, val: [121.87, 123.56, 126.10, 137.53, 143.95, 151.29, 164.39, 166.99, 169.60, 186.79] },
-        { rem: Infinity, val: [111.72, 113.26, 115.58, 126.96, 132.89, 139.69, 151.71, 154.11, 156.49, 172.65] }
-    ]
-};
-
-const getSaudeValue = (rem, idade) => {
-    if (!idade || idade <= 0) return 0;
-    let idadeIndex = saudePerCapita.faixasIdade.findIndex(x => idade <= x);
-    if (idadeIndex < 0) idadeIndex = saudePerCapita.faixasIdade.length;
-
-    const remFaixa = saudePerCapita.valores.find(x => rem < x.rem);
-    return remFaixa.val[idadeIndex] ?? 0;
-};
 
 // ---------------------------- UI ----------------------------
 
@@ -268,34 +192,29 @@ const buildResultsHTML = items => items.map(it => `
   </span>
 </div>`).join('');
 
-
 // ---------------------------- Simulação ----------------------------
 
 const handleFormSubmit = e => {
     e.preventDefault();
 
-    const periodo = $('periodo').value;
+    const periodo = '2026';
     const classe = classeSelect.value;
     const titulo = $('titulo').value;
     const ponto = safeParseFloat($('point').value);
     const dias = safeParseFloat($('dias').value);
     const mes = safeParseFloat($('mes').value) || 1;
-    const mesTrab = safeParseFloat($('mes_trabalhado').value);
+    const mesTrab = Math.min(12, Math.max(0, safeParseFloat($('mes_trabalhado').value)));
 
     const padraoIndex = safeParseInt(padraoSelect.value);
-
     const simulacao = $('simulacaoEspecial').value;
 
     const auxAlimentacao = safeParseFloat($('auxAlimentacao').value);
-    const auxTransporte = safeParseFloat($('auxTransporte').value);
-    const auxCrecheQtd = safeParseInt($('auxCreche').value);
+    const auxTransporteAtivo = $('auxTransporteAtivo').checked;
+    const valorDiarioTransporte = auxTransporteAtivo ? safeParseFloat($('valorDiarioTransporte').value) : 0;
+    const diasUteisTransporte = auxTransporteAtivo ? Math.min(31, Math.max(0, safeParseInt($('diasUteisTransporte').value))) : 0;
 
-    const idadeTitular = safeParseInt($('idadeTitular').value);
-    const idadesDeps = [
-        safeParseInt($('idadeDep1').value),
-        safeParseInt($('idadeDep2').value),
-        safeParseInt($('idadeDep3').value)
-    ];
+    const funprespAtivo = $('funprespAtivo').checked;
+    const dedutiveis = safeParseFloat($('dedutiveis').value);
 
     const gsisp = document.querySelector('input[name="gsisp"]:checked')?.value;
     const gsiste = document.querySelector('input[name="gsiste"]:checked')?.value;
@@ -310,110 +229,182 @@ const handleFormSubmit = e => {
     const adicionalGSISTE = gsiste === 'sim' ? 4544.26 : 0;
 
     let rendTrib = salario + gdact + rt + adicionalGSISP + adicionalGSISTE;
-	let rendFix = salario + gdact + rt;
-	
-	const fceSelecionada = selectFCE.options[selectFCE.selectedIndex];
-	const valorFCE = fceSelecionada && fceSelecionada.dataset.valor ? parseFloat(fceSelecionada.dataset.valor) : 0;
-	rendTrib += valorFCE;
 
-    const auxCreche = auxCrecheQtd * VALOR_AUX_CRECHE;
-    const auxTranspDed = Math.min(auxTransporte, salario * 0.06);
+    const fceSelecionada = selectFCE.options[selectFCE.selectedIndex];
+    const valorFCE = fceSelecionada && fceSelecionada.dataset.valor ? parseFloat(fceSelecionada.dataset.valor) : 0;
+    rendTrib += valorFCE;
 
-    let totalSaude = getSaudeValue(salario, idadeTitular);
-    idadesDeps.forEach(i => totalSaude += getSaudeValue(salario, i));
+    const baseFerias13 = salario + gdact + adicionalGSISP + rt + valorFCE;
+    const baseFunprespMensal = salario + gdact + rt;
+    const baseFixa13 = salario + gdact + rt;
 
-    const beneficios = auxAlimentacao + auxTransporte + auxCreche + totalSaude;
-    const bruto = rendTrib + beneficios;
+    const gastoTransporteMensal = valorDiarioTransporte * diasUteisTransporte;
+    const cotaParticipacao6PorCento = (salario * 0.06 / 22) * diasUteisTransporte;
+    const auxTransporteReceber = auxTransporteAtivo && valorDiarioTransporte > 0 && diasUteisTransporte > 0
+        ? Math.max(0, Math.round((gastoTransporteMensal - cotaParticipacao6PorCento) * 100) / 100)
+        : 0;
+    const parcelaCusteioAplicada = auxTransporteAtivo && valorDiarioTransporte > 0 && diasUteisTransporte > 0
+        ? Math.min(gastoTransporteMensal, Math.round(cotaParticipacao6PorCento * 100) / 100)
+        : 0;
+
+    const beneficios = auxAlimentacao + auxTransporteReceber;
+    let bruto = rendTrib + beneficios;
 
     let inss = 0, irpf = 0, funpresp = 0, liquido = 0;
-
     const items = [];
 
     // ----------------- Mês Normal / Férias -----------------
     if (simulacao === 'mes_normal' || simulacao === 'ferias') {
 
-        let abonoFerias = 0;
+        let tercoFerias = 0;
 
         if (simulacao === 'ferias') {
-            abonoFerias = (salario / 12) * (mesTrab / 3);
-            rendTrib += abonoFerias;
+            tercoFerias = (baseFerias13 / 3) * (mesTrab / 12);
+            rendTrib += tercoFerias;
+            bruto = rendTrib + beneficios;
         }
 
-        inss = Math.round(calculateINSS(rendTrib) * 100) / 100 - 0.02;
-        funpresp = Math.floor(calculateComplementar(rendFix) * 100) / 100;
+        inss = calculateINSS(rendTrib);
+        funpresp = funprespAtivo ? calculateComplementar(baseFunprespMensal) : 0;
 
         irpf = getIRPF(periodo, rendTrib - inss - funpresp);
-
-        liquido = rendTrib + beneficios - inss - irpf - auxTranspDed - funpresp;
+        liquido = rendTrib + beneficios - inss - irpf - funpresp - dedutiveis;
 
         items.push(
-            { label: 'Salário Base', value: salario, positive: true },
+            ...(simulacao === 'ferias' ? [{ label: 'Base de cálculo do 1/3 de Férias', value: baseFerias13 }] : []),
+            { label: 'Vencimento Básico', value: salario, positive: true },
             { label: 'GDACT', value: gdact, positive: true },
             { label: 'RT', value: rt, positive: true },
             { label: 'GSISP', value: adicionalGSISP, positive: true },
             { label: 'GSISTE', value: adicionalGSISTE, positive: true },
-			{ label: 'Função Comissionada (FCE)', value: valorFCE, positive: true }
+            { label: 'Função/Cargo Comissionado (FCE)', value: valorFCE, positive: true }
         );
 
-        if (simulacao === 'ferias')
-            items.push({ label: '1/3 Férias', value: abonoFerias, positive: true });
+        if (simulacao === 'ferias') {
+            items.push(
+                { label: '1/3 de Férias (proporcional aos meses)', value: tercoFerias, positive: true }
+            );
+        }
 
         items.push(
-            { label: 'Aux. Alimentação', value: auxAlimentacao, positive: true },
-            { label: 'Aux. Transporte', value: auxTransporte, positive: true },
-            { label: 'Aux. Creche', value: auxCreche, positive: true },
-            { label: 'Ressarc. Saúde', value: totalSaude, positive: true },
+            { label: 'Aux. Alimentação', value: auxAlimentacao, positive: true }
+        );
 
+        if (auxTransporteAtivo) {
+            items.push(
+                { label: `Aux. Transporte Líquido (${diasUteisTransporte} dias úteis - IN 71/2025)`, value: auxTransporteReceber, positive: true }
+            );
+        }
+
+        items.push(
             { label: '(-) INSS', value: inss, negative: true },
             { label: '(-) FUNPRESP', value: funpresp, negative: true },
-            { label: '(-) IRPF', value: irpf, negative: true },
-            { label: '(-) 6% Aux. Transporte', value: auxTranspDed, negative: true }
+            { label: '(-) IRPF', value: irpf, negative: true }
+        );
+
+        if (auxTransporteAtivo && valorDiarioTransporte > 0 && diasUteisTransporte > 0) {
+            items.push(
+                { label: '(-) Aux. Transporte (6% VB)', value: parcelaCusteioAplicada, negative: true }
+            );
+        }
+
+        items.push(
+            { label: '(-) Outros Descontos', value: dedutiveis, negative: true }
         );
     }
 
     // ----------------- 13º - Primeira Parcela -----------------
     else if (simulacao === 'decimo_1') {
 
-        const total13 = (rendTrib / 12) * mesTrab;
+        const incluirGrat13_1 = document.querySelector('input[name="incluirGrat13_1"]:checked')?.value === 'sim';
+        const mesesGrat13_1 = incluirGrat13_1
+            ? Math.min(12, Math.max(0, safeParseFloat($('quantos_meses_grat13_1').value)))
+            : 0;
+
+        const propFixa13 = (baseFixa13 / 12) * mesTrab;
+        const baseVariaveis13 = adicionalGSISP + adicionalGSISTE + valorFCE;
+        const propVariaveis13 = incluirGrat13_1 ? (baseVariaveis13 / 12) * mesesGrat13_1 : 0;
+
+        const total13 = propFixa13 + propVariaveis13;
         const parcela1 = total13 / 2;
 
-        liquido = parcela1 + beneficios;
+        bruto = total13;
+        liquido = parcela1;
 
         items.push(
-            { label: '1ª Parcela 13º (50%)', value: parcela1, positive: true },
-            { label: 'Benefícios do Mês', value: beneficios, positive: true }
+            { label: 'Base fixa do 13º (VB + GDACT + RT)', value: baseFixa13 },
+            { label: 'Parcela fixa proporcional (' + mesTrab + '/12)', value: propFixa13, positive: true }
+        );
+
+        if (incluirGrat13_1) {
+            items.push(
+                { label: 'Base de gratificações (GSISP + GSISTE + FCE)', value: baseVariaveis13 },
+                { label: 'Gratificações proporcionais (' + mesesGrat13_1 + '/12)', value: propVariaveis13, positive: true }
+            );
+        }
+
+        items.push(
+            { label: '1ª Parcela do 13º (50%, sem descontos)', value: parcela1, positive: true }
         );
     }
 
     // ----------------- 13º - Segunda Parcela -----------------
     else if (simulacao === 'decimo_2') {
 
-        const total13 = (rendTrib / 12) * mesTrab;
+        const incluirGrat13_2 = document.querySelector('input[name="incluirGrat13_2"]:checked')?.value === 'sim';
+        const mesesGrat13_2 = incluirGrat13_2
+            ? Math.min(12, Math.max(0, safeParseFloat($('quantos_meses_grat13_2').value)))
+            : 0;
 
-        const parcela1 = total13 / 2;
-        const parcela2Base = parcela1;
+        const incluirGrat13_1 = document.querySelector('input[name="incluirGrat13_1"]:checked')?.value === 'sim';
+        const mesesGrat13_1 = incluirGrat13_1
+            ? Math.min(12, Math.max(0, safeParseFloat($('quantos_meses_grat13_1').value)))
+            : 0;
+
+        const propFixa13 = (baseFixa13 / 12) * mesTrab;
+        const baseVariaveis13 = adicionalGSISP + adicionalGSISTE + valorFCE;
+        const propVariaveis13_2 = incluirGrat13_2 ? (baseVariaveis13 / 12) * mesesGrat13_2 : 0;
+        const total13 = propFixa13 + propVariaveis13_2;
+
+        const propVariaveis13_1 = incluirGrat13_1 ? (baseVariaveis13 / 12) * mesesGrat13_1 : 0;
+        const total13Primeira = propFixa13 + propVariaveis13_1;
+        const parcela1Paga = total13Primeira / 2;
+
+        const baseFunpresp13 = (salario + gdact + rt) * (mesTrab / 12);
 
         const inss13 = calculateINSS(total13);
         const irpf13 = getIRPF(periodo, total13 - inss13);
-        const funpresp13 = calculateComplementar(total13);
+        const funpresp13 = funprespAtivo ? calculateComplementar(baseFunpresp13) : 0;
 
-        const parcela2 = parcela2Base - inss13 - irpf13 - funpresp13;
+        const parcela2 = total13 - parcela1Paga - inss13 - irpf13 - funpresp13;
 
+        bruto = total13;
         liquido = parcela2;
 
         items.push(
-            { label: 'Total 13º', value: total13 },
-            { label: '(-) INSS 13º', value: inss13, negative: true },
-            { label: '(-) IRPF 13º', value: irpf13, negative: true },
-            { label: '(-) FUNPRESP 13º (total)', value: funpresp13, negative: true },
-            { label: 'Valor da 2ª Parcela', value: parcela2, positive: true }
+            { label: 'Base fixa do 13º (VB + GDACT + RT)', value: baseFixa13 },
+            { label: 'Parcela fixa proporcional (' + mesTrab + '/12)', value: propFixa13, positive: true }
+        );
+
+        if (incluirGrat13_2) {
+            items.push(
+                { label: 'Gratificações proporcionais na 2ª parcela (' + mesesGrat13_2 + '/12)', value: propVariaveis13_2, positive: true }
+            );
+        }
+
+        items.push(
+            { label: '13º total proporcional', value: total13, positive: true },
+            { label: '(-) 1ª Parcela já paga', value: parcela1Paga, negative: true },
+            { label: '(-) Previdência 13º', value: inss13, negative: true },
+            { label: '(-) IR 13º', value: irpf13, negative: true },
+            { label: '(-) FUNPRESP 13º', value: funpresp13, negative: true },
+            { label: '2ª Parcela do 13º (líquida)', value: parcela2, positive: true }
         );
     }
 
-    // ----------------- Resultado Final -----------------
     let html = `<h2>Resultado da Simulação</h2>`;
     html += buildResultsHTML(items);
-    html += `<div class="result-item" id="net-salaryB-item"><span class="label">Salário Bruto</span><span class="value">${formatCurrency(bruto)}</span></div>`;
+    html += `<div class="result-item" id="net-salaryB-item"><span class="label">${simulacao === 'decimo_1' || simulacao === 'decimo_2' ? '13º Bruto Total' : 'Remuneração Bruta'}</span><span class="value">${formatCurrency(bruto)}</span></div>`;
     html += `<div class="result-item" id="net-salary-item"><span class="label">Salário Líquido</span><span class="value">${formatCurrency(liquido)}</span></div>`;
 
     resultsDiv.innerHTML = html;
@@ -424,11 +415,3 @@ const handleFormSubmit = e => {
 classeSelect.addEventListener('change', updatePadraoOptions);
 $('simulatorForm').addEventListener('submit', handleFormSubmit);
 updatePadraoOptions();
-
-
-
-
-
-
-
-
