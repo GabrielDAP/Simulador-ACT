@@ -15,9 +15,9 @@
         <form id="simulatorForm">
             <fieldset><legend>Estrutura da Carreira</legend><div class="form-row">
                 <div class="form-group"><label>Vigência</label><input type="text" value="Abril/2026" readonly></div>
-                <div class="form-group"><label for="classe">Classe</label><select id="classe"><option value="A">A</option><option value="B">B</option><option value="C">C</option><option value="Especial">Especial</option></select></div>
+                <div class="form-group"><label for="classe">Classe</label><select id="classe"><option value="A">A</option><option value="B" selected>B</option><option value="C">C</option><option value="Especial">Especial</option></select></div>
                 <div class="form-group"><label for="padrao">Padrão</label><select id="padrao"></select></div>
-                <div class="form-group"><label for="titulo">Titulação</label><select id="titulo"><option value="0">Nenhuma</option><option value="1">Pós/Espec.</option><option value="2">Mestrado</option><option value="3">Doutorado</option></select></div>
+                <div class="form-group"><label for="titulo">Titulação</label><select id="titulo"><option value="0">Nenhuma</option><option value="1" selected>Pós/Espec.</option><option value="2">Mestrado</option><option value="3">Doutorado</option></select></div>
             </div></fieldset>
             
             <fieldset><legend>Simulações Específicas</legend><div class="form-row">
@@ -25,7 +25,7 @@
                 <div class="form-group" id="diasGroup"><label for="dias">Dias</label><input type="number" id="dias" value="30" min="1" max="31"></div>
                 <div class="form-group" id="mesGroup"><label for="mes">Nº de Dias do Mês</label><input type="number" id="mes" value="30" min="1" max="31"></div>
                 <div class="form-group" id="mesTrabalhadoGroup" style="flex-basis: 100%;"><label for="mes_trabalhado">Meses trabalhados (13º/férias)</label><input type="number" id="mes_trabalhado" value="12" min="0" max="12"></div>
-                
+
                 <!-- Pergunta da 1ª Parcela do 13º -->
                 <div class="form-group" id="incluirGrat13Group" style="display: none; flex-basis: 100%;">
                     <label>Haverão parcelas de GSISP/GSISTE/FCE inclusas na 1ª parcela do 13º?</label>
@@ -51,15 +51,26 @@
                     <label for="quantos_meses_grat13_2">Quantos meses?</label>
                     <input type="number" id="quantos_meses_grat13_2" value="12" min="1" max="12">
                 </div>
+
+                <!-- Valor da 1ª Parcela já paga (Exclusivo 2ª Parcela do 13º) -->
+                <div class="form-group" id="primeiraParcelaPagaGroup" style="display: none; flex-basis: 100%; background: #f8f9fa; padding: 12px; border-radius: 4px; border: 1px solid #ddd;">
+                    <label for="valor_primeira_parcela" style="font-weight: bold;">Valor da 1ª Parcela já paga (R$)</label>
+                    <p style="font-size: 0.85em; color: #666; margin: 4px 0 8px 0;">Informe o valor histórico recebido na 1ª parcela (ex: quando estava em B I). Deixe vazio para calcular automaticamente.</p>
+                    <input type="number" id="valor_primeira_parcela" step="0.01" min="0" placeholder="Ex.: 5752.71" style="margin-bottom: 8px;">
+                    <label class="toggle-button" style="display: flex; align-items: center; gap: 6px; cursor: pointer;">
+                        <input type="checkbox" id="naoRecebiPrimeiraParcela">
+                        <span>Não recebi 1ª parcela (descontar R$ 0,00)</span>
+                    </label>
+                </div>
                 
-                <div class="form-group" id="pointGroup" style="flex-basis: 100%;"><label for="point">GDACT (Pontos)</label><input type="number" id="point" value="80" min="0" max="100"></div>
+                <div class="form-group" id="pointGroup" style="flex-basis: 100%;"><label for="point">GDACT (Pontos)</label><input type="number" id="point" value="100" min="0" max="100" step="0.01"></div>
             </div></fieldset>
 
             <fieldset><legend>Benefícios e Gratificações</legend><div class="form-row">
                 <div class="form-group"><label>GSISP</label><div class="radio"><label><input type="radio" name="gsisp" value="nao" checked> Não</label><label><input type="radio" name="gsisp" value="sim"> Sim</label></div></div>
                 <div class="form-group"><label>GSISTE</label><div class="radio"><label><input type="radio" name="gsiste" value="nao" checked> Não</label><label><input type="radio" name="gsiste" value="sim"> Sim</label></div></div>
                 <div class="form-group" style="flex-basis: 100%;"><label for="funcaoComissionada">Função Comissionada</label><select id="funcaoComissionada"></select></div>
-                <div class="form-group" style="flex-basis: 100%;"><label for="auxAlimentacao">Auxílio Alimentação</label><input type="number" id="auxAlimentacao" value="1192.00" step="0.01"></div>
+                <div class="form-group" style="flex-basis: 100%;"><label for="auxAlimentacao">Auxílio Alimentação</label><input type="number" id="auxAlimentacao" value="1000.00" step="0.01"></div>
             </div></fieldset>
 
             <fieldset><legend>Descontos e Adicionais</legend><div class="form-row">
@@ -77,7 +88,7 @@
                 </div>
                 <div class="form-group" style="flex-basis: 100%;">
                     <label>Contribuição FUNPRESP</label>
-                    <label class="toggle-button"><input type="checkbox" id="funprespAtivo"><span>Incluir contribuição FUNPRESP (8,5%)</span></label>
+                    <label class="toggle-button"><input type="checkbox" id="funprespAtivo" checked><span>Incluir contribuição FUNPRESP (8,5%)</span></label>
                 </div>
                 <div class="form-group" style="flex-basis: 100%;"><label for="dedutiveis">(-) Outros Descontos</label><input type="number" id="dedutiveis" value="0" min="0" step="0.01" placeholder="Ex.: 500,00"></div>
             </div></fieldset>
@@ -102,19 +113,35 @@
         const diasUteisGroup = document.getElementById("diasUteisTransporteGroup");
         const valorDiarioInput = document.getElementById("valorDiarioTransporte");
 
+        const naoRecebiCheckbox = document.getElementById("naoRecebiPrimeiraParcela");
+        const valorPrimeiraInput = document.getElementById("valor_primeira_parcela");
+
         const groups = {
             dias: document.getElementById("diasGroup"),
             mes: document.getElementById("mesGroup"),
             trabalhado: document.getElementById("mesTrabalhadoGroup"),
             incluirGrat13_1: document.getElementById("incluirGrat13Group"),
             quantosMesesGrat13_1: document.getElementById("quantosMesesGrat13_1Group"),
-            incluirGrat13_2: document.getElementById("incluirGrat13_2Group"),
+            incluirGrat13_2: document.getElementById("incluirGrat13Group"), // corrigido abaixo
             quantosMesesGrat13_2: document.getElementById("quantosMesesGrat13_2Group"),
+            primeiraParcelaPaga: document.getElementById("primeiraParcelaPagaGroup"),
             pontos: document.getElementById("pointGroup")
         };
+        
+        // Ajuste correto do grupo 2ª parcela
+        groups.incluirGrat13_2 = document.getElementById("incluirGrat13_2Group");
 
         const radiosGrat13_1 = document.querySelectorAll('input[name="incluirGrat13_1"]');
         const radiosGrat13_2 = document.querySelectorAll('input[name="incluirGrat13_2"]');
+
+        naoRecebiCheckbox.addEventListener("change", function () {
+            if (this.checked) {
+                valorPrimeiraInput.value = "";
+                valorPrimeiraInput.disabled = true;
+            } else {
+                valorPrimeiraInput.disabled = false;
+            }
+        });
 
         function atualizarTransporteCampos() {
             if (auxTransporteAtivoCheckbox.checked) {
@@ -131,20 +158,21 @@
         function atualizarSubcampos() {
             const v = tipo.value;
             const incluir1 = document.querySelector('input[name="incluirGrat13_1"]:checked')?.value === "sim";
-            groups.quantosMesesGrat13_1.style.display = (v === "decimo_1" && incluir1) ? "block" : "none";
+            groups.quantosMesesGrat13_1.style.display = (v === "decimo_1" && incluir1) ? "flex" : "none";
 
             const incluir2 = document.querySelector('input[name="incluirGrat13_2"]:checked')?.value === "sim";
-            groups.quantosMesesGrat13_2.style.display = (v === "decimo_2" && incluir2) ? "block" : "none";
+            groups.quantosMesesGrat13_2.style.display = (v === "decimo_2" && incluir2) ? "flex" : "none";
         }
 
         function atualizarCampos() {
             const v = tipo.value;
-            groups.dias.style.display = v === "mes_fracionado" ? "block" : "none";
-            groups.mes.style.display = v === "mes_fracionado" ? "block" : "none";
+            groups.dias.style.display = v === "mes_fracionado" ? "flex" : "none";
+            groups.mes.style.display = v === "mes_fracionado" ? "flex" : "none";
             groups.trabalhado.style.display = ["ferias", "decimo_1", "decimo_2"].includes(v) ? "flex" : "none";
 
             groups.incluirGrat13_1.style.display = v === "decimo_1" ? "flex" : "none";
             groups.incluirGrat13_2.style.display = v === "decimo_2" ? "flex" : "none";
+            groups.primeiraParcelaPaga.style.display = v === "decimo_2" ? "flex" : "none";
             
             atualizarSubcampos();
             groups.pontos.style.display = "flex";
