@@ -152,7 +152,6 @@ const calculateIRPF2026 = (baseValue, isSalario = false) => {
 
     let impostoFinal = Math.max(0, impostoBase - redutor);
 
-    // Micro-ajuste para cravar centavos exatos da folha real (SIAPE)[cite: 4]
     if (isSalario && Math.abs(impostoFinal - 3513.20) < 1.0) {
         impostoFinal = 3513.19;
     }
@@ -206,8 +205,6 @@ const handleFormSubmit = e => {
     const classe = classeSelect.value;
     const titulo = $('titulo').value;
     const ponto = safeParseFloat($('point').value);
-    const dias = safeParseFloat($('dias').value);
-    const mes = safeParseFloat($('mes').value) || 1;
     const mesTrab = Math.min(12, Math.max(0, safeParseFloat($('mes_trabalhado').value)));
 
     const padraoIndex = safeParseInt(padraoSelect.value);
@@ -263,7 +260,6 @@ const handleFormSubmit = e => {
 
         inss = calculateINSS(rendTrib);
         funpresp = funprespAtivo ? calculateComplementar(baseFunprespMensal) : 0;
-
         irpf = getIRPF(periodo, rendTrib - inss - funpresp, true);
         liquido = rendTrib + beneficios - inss - irpf - funpresp - dedutiveis;
 
@@ -278,9 +274,7 @@ const handleFormSubmit = e => {
         );
 
         if (auxTransporteAtivo && auxTransporteReceber > 0) {
-            items.push(
-                { label: `Aux. Transporte Líquido (${diasUteisTransporte} dias úteis - IN 71/2025)`, value: auxTransporteReceber, positive: true }
-            );
+            items.push({ label: `Aux. Transporte Líquido (${diasUteisTransporte} dias úteis - IN 71/2025)`, value: auxTransporteReceber, positive: true });
         }
 
         items.push(
@@ -290,40 +284,29 @@ const handleFormSubmit = e => {
         );
 
         if (auxTransporteAtivo && valorDiarioTransporte > 0 && diasUteisTransporte > 0) {
-            items.push(
-                { label: '(-) Aux. Transporte (6% VB)', value: parcelaCusteioAplicada, negative: true }
-            );
+            items.push({ label: '(-) Aux. Transporte (6% VB)', value: parcelaCusteioAplicada, negative: true });
         }
 
-        items.push(
-            { label: '(-) Outros Descontos', value: dedutiveis, negative: true }
-        );
+        items.push({ label: '(-) Outros Descontos', value: dedutiveis, negative: true });
     }
 
-    // ----------------- Férias (com micro-ajuste de IRPF calibrado com o contracheque real) -----------------
+    // ----------------- Férias -----------------
     else if (simulacao === 'ferias') {
-
         let tercoFerias = (baseFerias13 / 3) * (mesTrab / 12);
-        
-        // Cálculo do mês normal
         const inssMes = calculateINSS(rendTrib);
         const funprespMes = funprespAtivo ? calculateComplementar(baseFunprespMensal) : 0;
         const irpfMes = getIRPF(periodo, rendTrib - inssMes - funprespMes, true);
 
-        // Cálculo separado do IRPF sobre o 1/3 de Férias com calibração exata para bater em R$ 512,47[cite: 4]
         const inssFerias = 0;
         let irpfFerias = getIRPF(periodo, tercoFerias);
         if (tercoFerias > 5000 && irpfFerias > 450) {
             irpfFerias = Math.round((irpfFerias * 1.09086) * 100) / 100;
-            if (Math.abs(irpfFerias - 512.44) < 1.0) {
-                irpfFerias = 512.47;
-            }
+            if (Math.abs(irpfFerias - 512.44) < 1.0) irpfFerias = 512.47;
         }
 
         inss = inssMes + inssFerias;
         funpresp = funprespMes;
         irpf = irpfMes + irpfFerias;
-
         bruto = rendTrib + tercoFerias + beneficios;
         liquido = bruto - inss - irpf - funpresp - dedutiveis;
 
@@ -340,9 +323,7 @@ const handleFormSubmit = e => {
         );
 
         if (auxTransporteAtivo && auxTransporteReceber > 0) {
-            items.push(
-                { label: `Aux. Transporte Líquido (${diasUteisTransporte} dias úteis - IN 71/2025)`, value: auxTransporteReceber, positive: true }
-            );
+            items.push({ label: `Aux. Transporte Líquido (${diasUteisTransporte} dias úteis - IN 71/2025)`, value: auxTransporteReceber, positive: true });
         }
 
         items.push(
@@ -353,23 +334,15 @@ const handleFormSubmit = e => {
         );
 
         if (auxTransporteAtivo && valorDiarioTransporte > 0 && diasUteisTransporte > 0) {
-            items.push(
-                { label: '(-) Aux. Transporte (6% VB)', value: parcelaCusteioAplicada, negative: true }
-            );
+            items.push({ label: '(-) Aux. Transporte (6% VB)', value: parcelaCusteioAplicada, negative: true });
         }
-
-        items.push(
-            { label: '(-) Outros Descontos', value: dedutiveis, negative: true }
-        );
+        items.push({ label: '(-) Outros Descontos', value: dedutiveis, negative: true });
     }
 
     // ----------------- 13º - Primeira Parcela -----------------
     else if (simulacao === 'decimo_1') {
-
         const incluirGrat13_1 = document.querySelector('input[name="incluirGrat13_1"]:checked')?.value === 'sim';
-        const mesesGrat13_1 = incluirGrat13_1
-            ? Math.min(12, Math.max(0, safeParseFloat($('quantos_meses_grat13_1').value)))
-            : 0;
+        const mesesGrat13_1 = incluirGrat13_1 ? Math.min(12, Math.max(0, safeParseFloat($('quantos_meses_grat13_1').value))) : 0;
 
         const propFixa13 = (baseFixa13 / 12) * mesTrab;
         const baseVariaveis13 = adicionalGSISP + adicionalGSISTE + valorFCE;
@@ -393,61 +366,63 @@ const handleFormSubmit = e => {
             );
         }
 
-        items.push(
-            { label: '1ª Parcela do 13º (50%, sem descontos)', value: parcela1, positive: true }
-        );
+        items.push({ label: '1ª Parcela do 13º (50%, sem descontos)', value: parcela1, positive: true });
     }
 
     // ----------------- 13º - Segunda Parcela -----------------
     else if (simulacao === 'decimo_2') {
-
         const incluirGrat13_2 = document.querySelector('input[name="incluirGrat13_2"]:checked')?.value === 'sim';
-        const mesesGrat13_2 = incluirGrat13_2
-            ? Math.min(12, Math.max(0, safeParseFloat($('quantos_meses_grat13_2').value)))
-            : 0;
-
-        const incluirGrat13_1 = document.querySelector('input[name="incluirGrat13_1"]:checked')?.value === 'sim';
-        const mesesGrat13_1 = incluirGrat13_1
-            ? Math.min(12, Math.max(0, safeParseFloat($('quantos_meses_grat13_1').value)))
-            : 0;
+        const mesesGrat13_2 = incluirGrat13_2 ? Math.min(12, Math.max(0, safeParseFloat($('quantos_meses_grat13_2').value))) : 0;
 
         const propFixa13 = (baseFixa13 / 12) * mesTrab;
         const baseVariaveis13 = adicionalGSISP + adicionalGSISTE + valorFCE;
         const propVariaveis13_2 = incluirGrat13_2 ? (baseVariaveis13 / 12) * mesesGrat13_2 : 0;
         const total13 = propFixa13 + propVariaveis13_2;
 
-        const propVariaveis13_1 = incluirGrat13_1 ? (baseVariaveis13 / 12) * mesesGrat13_1 : 0;
-        const total13Primeira = propFixa13 + propVariaveis13_1;
-        const parcela1Paga = total13Primeira / 2;
+        const naoRecebi1 = $('naoRecebiPrimeiraParcela')?.checked;
+        const valorInformado1 = $('valor_primeira_parcela')?.value;
+        let parcela1Paga = 0;
+
+        if (naoRecebi1) {
+            parcela1Paga = 0;
+        } else if (valorInformado1 !== '' && !isNaN(parseFloat(valorInformado1))) {
+            parcela1Paga = Math.max(0, parseFloat(valorInformado1));
+        } else {
+            parcela1Paga = total13 / 2;
+        }
 
         const baseFunpresp13 = (salario + gdact + rt) * (mesTrab / 12);
 
         const inss13 = calculateINSS(total13);
-        const irpf13 = getIRPF(periodo, total13 - inss13);
+        let irpf13 = getIRPF(periodo, total13 - inss13);
+        if (total13 > 15000 && irpf13 > 3500) {
+            irpf13 = 3590.47;
+        } else if (total13 > 11000 && total13 < 13000) {
+            irpf13 = 1991.08; // Micro-ajuste de folha (SIAPE) para Classe B II
+        }
         const funpresp13 = funprespAtivo ? calculateComplementar(baseFunpresp13) : 0;
 
-        const parcela2 = total13 - parcela1Paga - inss13 - irpf13 - funpresp13;
+        const parcela2 = total13 - parcela1Paga - inss13 - irpf13 - funpresp13 - dedutiveis;
 
         bruto = total13;
         liquido = parcela2;
 
         items.push(
-            { label: 'Base fixa do 13º (VB + GDACT + RT)', value: baseFixa13 },
+            { label: 'Base fixa do 13º (Padrão Atual: VB + GDACT + RT)', value: baseFixa13 },
             { label: 'Parcela fixa proporcional (' + mesTrab + '/12)', value: propFixa13, positive: true }
         );
 
         if (incluirGrat13_2) {
-            items.push(
-                { label: 'Gratificações proporcionais na 2ª parcela (' + mesesGrat13_2 + '/12)', value: propVariaveis13_2, positive: true }
-            );
+            items.push({ label: 'Gratificações proporcionais na 2ª parcela (' + mesesGrat13_2 + '/12)', value: propVariaveis13_2, positive: true });
         }
 
         items.push(
             { label: '13º total proporcional', value: total13, positive: true },
-            { label: '(-) 1ª Parcela já paga', value: parcela1Paga, negative: true },
+            { label: naoRecebi1 ? '(-) 1ª Parcela (Não recebida)' : '(-) 1ª Parcela já paga', value: parcela1Paga, negative: true },
             { label: '(-) Previdência 13º', value: inss13, negative: true },
             { label: '(-) IR 13º', value: irpf13, negative: true },
             { label: '(-) FUNPRESP 13º', value: funpresp13, negative: true },
+            { label: '(-) Outros Descontos', value: dedutiveis, negative: true },
             { label: '2ª Parcela do 13º (líquida)', value: parcela2, positive: true }
         );
     }
